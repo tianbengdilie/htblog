@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import MarkdownBox from './components/Markdown/Markdown.vue'
+import MarkdownBox from './components/Markdown1'
 
 export default {
   name: 'App',
