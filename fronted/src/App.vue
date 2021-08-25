@@ -1,38 +1,28 @@
 <template>
-  <v-app>
-    <v-app-bar app color="deep-purple accent-4" dense dark>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Page title</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-menu left bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item v-for="n in 5" :key="n" @click="() => {}">
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+  <v-app id="inspire">
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Application</v-toolbar-title>
     </v-app-bar>
 
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list nav dense>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item v-for="(path, idx) in paths" :key="idx" :to="'/' + path">
+            <v-list-item-title>{{ path }}</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-main>
-      <v-container fluid>
-        <router-view></router-view>
+      <v-container fluid class="fill-height">
+        <v-layout class="fill-height">
+          <router-view></router-view>
+        </v-layout>
       </v-container>
     </v-main>
 
@@ -53,11 +43,16 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
+    website: {
+      title: "HT的个人博客"
+    },
+    paths: ["home", "viewer"]
   }),
+  methods: {},
   watch: {
     group() {
       this.drawer = false;
-    },
-  },
+    }
+  }
 };
 </script>
