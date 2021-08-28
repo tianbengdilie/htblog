@@ -16,8 +16,4 @@ func main() {
 	log.Panic(
 		http.ListenAndServe(":3000", nil),
 	)
-
-	defer func() {
-
-	}()
 }

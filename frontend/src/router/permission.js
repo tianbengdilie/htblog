@@ -18,6 +18,9 @@ router.beforeEach((to, from, next) => {
         if (to.path == '/login') {
             NProgress.done()
             next('/')
+        } else {
+            NProgress.done()
+            next()
         }
     } else {
         if (whiteList.indexOf(to.path) !== -1) {

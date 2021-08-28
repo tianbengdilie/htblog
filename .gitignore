@@ -1,4 +1,4 @@
-bin
-var
-tmp
+bin/
+var/
+tmp/
 go.sum
