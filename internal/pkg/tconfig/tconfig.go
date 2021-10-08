@@ -8,11 +8,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
+type TConfig struct {
 	_config *viper.Viper
-)
+}
 
-func init() {
+func New() *TConfig {
 	fmt.Println("init config file.")
 	appenv := os.Getenv("APPENV")
 	if appenv == "" {
@@ -20,7 +20,7 @@ func init() {
 	}
 	path := os.Getenv("ROOT_PATH") + "etc/" + appenv
 
-	_config = viper.New()
+	_config := viper.New()
 	_config.SetConfigName("config")
 	_config.SetConfigType("yaml")
 	_config.AddConfigPath(path)
@@ -32,20 +32,28 @@ func init() {
 	_config.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("config file changed: ", e.Name)
 	})
+
+	return &TConfig{
+		_config: _config,
+	}
 }
 
-func Get(key string) interface{} {
-	return _config.Get(key)
+func (config *TConfig) Get(key string) interface{} {
+	return config._config.Get(key)
 }
 
-func GetStringDefault(key, def string) string {
-	val := _config.GetString(key)
+func (config *TConfig) GetStringDefault(key, def string) string {
+	val := config._config.GetString(key)
 	if val == "" {
 		return def
 	}
 	return val
 }
 
-func GetString(key string) string {
-	return _config.GetString(key)
+func (config *TConfig) GetString(key string) string {
+	return config._config.GetString(key)
+}
+
+func (config *TConfig) GetStringSlice(key string) []string {
+	return config._config.GetStringSlice(key)
 }

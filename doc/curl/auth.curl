@@ -1,0 +1,11 @@
+curl -H "Content-Type:application/json" -X POST -d '{"account": "admin", "password":"12345678"}' http://127.0.0.1:3000/api/v1/auth/login
+
+Origin: http://example.com
+
+Origin: http://example.com
+
+curl -H "Content-Type:application/json" -H "Origin:http://example.com" -X POST -d '{"account": "admin", "password":"12345678"}' http://127.0.0.1:3000/api/v1/auth/login
+
+http://106.55.42.122:3000/api/v1/auth/login
+
+curl -H "Content-Type:application/json" -X POST -d '{"account": "admin", "password":"12345678"}' http://9.135.152.118:3000/api/v1/auth/login

@@ -4,6 +4,7 @@
       <v-card-title primary-title class="justify-center">
         <h1 class="headline pink--text text--accent-2">Here is homepage</h1>
       </v-card-title>
+      <v-container> </v-container>
     </v-card>
   </v-container>
 </template>

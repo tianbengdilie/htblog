@@ -1,3 +1,7 @@
 log:
-  level: "debug"
+  level: debug
+  hooks:
+    - console
+
+apiaddr: :3000
   

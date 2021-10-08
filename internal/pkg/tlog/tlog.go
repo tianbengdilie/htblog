@@ -2,20 +2,29 @@ package tlog
 
 import (
 	"fmt"
-	"htblog/internal/pkg/tconfig"
+	"io"
 	"os"
+	"path"
 	"time"
 
 	"htblog/internal/pkg/utils"
 
-	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-var level zapcore.Level
+type Logger struct {
+	*zap.SugaredLogger
+}
 
-func init() {
+var (
+	_defaultLogger *Logger
+	_logPath       string
+	_logName       string
+)
+
+func Init(outPath []string) {
 	logPath := os.Getenv("LOG_PATH")
 	if logPath == "" {
 		logPath = "var/log"
@@ -24,85 +33,56 @@ func init() {
 		fmt.Printf("create %v directory\n", logPath)
 		_ = os.Mkdir(logPath, os.ModePerm)
 	}
+	_logPath = logPath
+	_logName = "htblog.log"
+
+	pe := zap.NewDevelopmentEncoderConfig()
+	pe.EncodeTime = func(t time.Time, encoder zapcore.PrimitiveArrayEncoder) {
+		encoder.AppendString(t.Format("2006-01-02 15:04:05"))
+	}
+	pe.ConsoleSeparator = " | "
+
+	consoleEncoder := zapcore.NewConsoleEncoder(pe)
+	zap.NewDevelopment()
+
+	level := zap.DebugLevel
+
+	cores := make([]zapcore.Core, 0, len(outPath))
+	for _, path := range outPath {
+		switch path {
+		case "console":
+			cores = append(cores, zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level))
+		case "file":
+			cores = append(cores, zapcore.NewCore(consoleEncoder, zapcore.AddSync(getFileWriter()), level))
+		}
+	}
+
+	core := zapcore.NewTee(cores...)
+
+	l := zap.New(core, zap.AddCaller())
+	_defaultLogger = &Logger{
+		SugaredLogger: l.Sugar(),
+	}
+
+	fmt.Println("init log completed.")
 }
 
-func Tag(tag string) *zap.Logger {
-	logPath := tconfig.GetString("log.path")
-	if logPath == "" {
-		logPath = "var/log"
+func Tag(tag string) *Logger {
+	return &Logger{
+		SugaredLogger: _defaultLogger.Named(tag),
 	}
-	if ok, _ := utils.PathExists(logPath); !ok { // 判断是否有Director文件夹
-		fmt.Printf("create %v directory\n", logPath)
-		_ = os.Mkdir(logPath, os.ModePerm)
-	}
-
-	var level zapcore.Level
-	switch tconfig.Get("log.level") { // 初始化配置文件的Level
-	case "debug":
-		level = zap.DebugLevel
-	case "info":
-		level = zap.InfoLevel
-	case "warn":
-		level = zap.WarnLevel
-	case "error":
-		level = zap.ErrorLevel
-	case "dpanic":
-		level = zap.DPanicLevel
-	case "panic":
-		level = zap.PanicLevel
-	case "fatal":
-		level = zap.FatalLevel
-	default:
-		level = zap.InfoLevel
-	}
-
-	var logger *zap.Logger
-	if level == zap.DebugLevel || level == zap.ErrorLevel {
-		logger = zap.New(getEncoderCore(), zap.AddStacktrace(level))
-	} else {
-		logger = zap.New(getEncoderCore())
-	}
-	logger = logger.WithOptions(zap.AddCaller())
-	return logger
 }
 
-// getEncoderConfig 获取zapcore.EncoderConfig
-func getEncoderConfig() (config zapcore.EncoderConfig) {
-	config = zapcore.EncoderConfig{
-		MessageKey:     "message",
-		LevelKey:       "level",
-		TimeKey:        "time",
-		NameKey:        "logger",
-		CallerKey:      "caller",
-		StacktraceKey:  "string",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.LowercaseColorLevelEncoder,
-		EncodeTime:     CustomTimeEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller:   zapcore.FullCallerEncoder,
-	}
-	return config
-}
+func getFileWriter() io.Writer {
+	logPath := path.Join(_logPath, _logName)
+	fmt.Println("init log file:", logPath)
 
-// getEncoder 获取zapcore.Encoder
-func getEncoder() zapcore.Encoder {
-	if global.GVA_CONFIG.Zap.Format == "json" {
-		return zapcore.NewJSONEncoder(getEncoderConfig())
+	flog := &lumberjack.Logger{
+		Filename:   logPath,
+		MaxSize:    500, // megabytes
+		MaxBackups: 3,
+		MaxAge:     15,    //days
+		Compress:   false, // disabled by default
 	}
-	return zapcore.NewConsoleEncoder(getEncoderConfig())
-}
-
-// getEncoderCore 获取Encoder的zapcore.Core
-func getEncoderCore() (core zapcore.Core) {
-	writer, err := utils.GetWriteSyncer() // 使用file-rotatelogs进行日志分割
-	if err != nil {
-		fmt.Printf("Get Write Syncer Failed err:%v", err.Error())
-		return
-	}
-	return zapcore.NewCore(getEncoder(), writer, level)
-}
-
-// 自定义日志输出时间格式
-func CustomTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.Format(global.GVA_CONFIG.Zap.Prefix + "2006/01/02 - 15:04:05.000"))
+	return flog
 }

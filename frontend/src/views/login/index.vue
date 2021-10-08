@@ -8,22 +8,18 @@
           </v-card-title>
           <v-form ref="loginForm">
             <v-text-field
-              label="Username"
-              v-model="username"
+              label="Account"
+              v-model="loginForm.account"
               :counter="10"
-              :rules="nameRules"
-              required
             ></v-text-field>
             <v-text-field
               label="Password"
               type="password"
-              v-model="password"
+              v-model="loginForm.password"
               :counter="10"
-              :rules="pwdRules"
-              required
             ></v-text-field>
             <v-card-actions>
-              <v-btn primary large block @click.stop="login">Login</v-btn>
+              <v-btn primary large @click.stop="login">Login</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -33,34 +29,26 @@
 </template>
 
 <script>
-import { setToken } from "@/utils/auth.js";
+import { mapActions } from "vuex";
 
 export default {
   name: "loginpage",
   components: {},
   data: () => {
     return {
-      username: "",
-      nameRules: [
-        v => !!v || "Name is required",
-        v => (v && v.length <= 10) || "Name must be less than 10 characters"
-      ],
-      password: "",
-      pwdRules: [
-        v => !!v || "Password is required",
-        v => (v && v.length <= 10) || "Password must be less than 10 characters"
-      ]
+      loginForm: {
+        account: "",
+        password: ""
+      }
     };
   },
   methods: {
-    login: function() {
-      if (this.$refs.loginForm.validate()) {
-        console.log("login succeed");
-        setToken(this.username);
-        // TODO 调用后台接口, 判断权限
-      } else {
-        console.log("login fail");
-      }
+    ...mapActions("user", ["LoginIn"]),
+    login() {
+      console.log("here");
+      this.LoginIn(this.loginForm).then(data => {
+        console.log("login success : " + data);
+      });
     }
   }
 };
