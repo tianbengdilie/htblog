@@ -9,6 +9,8 @@ import (
 const (
 	prefixAccount2Token = "account-2-token-"
 	prefixToken2User    = "token-2-user-"
+
+	headerToken = "token"
 )
 
 func GenToken() string {

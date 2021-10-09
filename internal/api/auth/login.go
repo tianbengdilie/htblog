@@ -16,7 +16,8 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	Token string `json:"token"`
+	Token string   `json:"token"`
+	User  UserInfo `json:"user"`
 }
 
 func Login(ctx *gin.Context) {
@@ -61,6 +62,7 @@ func Login(ctx *gin.Context) {
 		MsgBase: terror.Succeed,
 		Data: LoginResp{
 			Token: token,
+			User:  dbUser2clientUser(user),
 		},
 	})
 }
@@ -100,7 +102,7 @@ func Register(ctx *gin.Context) {
 func Logout(ctx *gin.Context) {
 	logger := ahelper.GetLog(ctx)
 
-	token := ctx.GetHeader("x-token")
+	token := ctx.GetHeader(headerToken)
 	if token == "" {
 		ctx.JSON(http.StatusOK, terror.ErrReqParam)
 		return
@@ -118,4 +120,33 @@ func Logout(ctx *gin.Context) {
 
 	logger.Infof("user %s logout", user.NickName)
 	ctx.JSON(http.StatusOK, terror.Succeed)
+}
+
+type GetUserInfoResp struct {
+	User UserInfo `json:"user"`
+}
+
+func GetUserInfo(ctx *gin.Context) {
+	logger := ahelper.GetLog(ctx)
+
+	token := ctx.GetHeader(headerToken)
+	if token == "" {
+		ctx.JSON(http.StatusOK, terror.ErrReqParam)
+		return
+	}
+
+	user := GetUserByToken(token)
+	if user == nil {
+		logger.Warn("invalid token")
+		ctx.JSON(http.StatusOK, terror.ErrInvalidToken)
+		return
+	}
+
+	logger.Infof("GetUserInfo %s", user.NickName)
+	ctx.JSON(http.StatusOK, terror.Msg{
+		MsgBase: terror.Succeed,
+		Data: GetUserInfoResp{
+			User: dbUser2clientUser(user),
+		},
+	})
 }

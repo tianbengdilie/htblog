@@ -36,4 +36,9 @@ var (
 		Code: 202,
 		Msg:  "user duplicate error",
 	}
+
+	ErrInvalidToken = MsgBase{
+		Code: 203,
+		Msg:  "token invalid",
+	}
 )
