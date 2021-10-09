@@ -18,8 +18,14 @@
               v-model="loginForm.password"
               :counter="10"
             ></v-text-field>
-            <v-card-actions>
-              <v-btn primary large @click.stop="login">Login</v-btn>
+            <v-card-actions class="justify-space-around">
+              <v-btn color="primary" large @click.stop="login">Login</v-btn>
+              <v-btn large @click.stop="registerDialog = true">
+                Register
+              </v-btn>
+              <v-dialog v-model="registerDialog">
+                <register-card @completed="registerDialog = false" />
+              </v-dialog>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -30,16 +36,19 @@
 
 <script>
 import { mapActions } from "vuex";
+import { register } from "@/api/user";
+import registerCard from "@/components/register-card";
 
 export default {
   name: "loginpage",
-  components: {},
+  components: { registerCard },
   data: () => {
     return {
       loginForm: {
-        account: "",
-        password: ""
-      }
+        account: "dev",
+        password: "dev"
+      },
+      registerDialog: false
     };
   },
   methods: {
@@ -48,6 +57,11 @@ export default {
       console.log("here");
       this.LoginIn(this.loginForm).then(data => {
         console.log("login success : " + data);
+      });
+    },
+    onClickRegister() {
+      register(this.loginForm).then(data => {
+        console.log("register success : " + data);
       });
     }
   }

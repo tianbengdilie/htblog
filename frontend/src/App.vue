@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <!-- <v-app id="inspire">
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>Application</v-toolbar-title>
@@ -31,6 +31,9 @@
         {{ new Date().getFullYear() }} — <strong>Howewu</strong>
       </v-col>
     </v-footer>
+  </v-app> -->
+  <v-app>
+    <router-view />
   </v-app>
 </template>
 
@@ -44,21 +47,21 @@ export default {
     // if no subcomponents specify a metaInfo.title, this title will be used
     title: "Default Title",
     // all titles will be injected into this template
-    titleTemplate: "%s | My Awesome Webapp",
+    titleTemplate: "%s | My Awesome Webapp"
   },
   data: () => ({
     drawer: false,
     group: null,
     website: {
-      title: "HT的个人博客",
+      title: "HT的个人博客"
     },
-    paths: ["home", "viewer"],
+    paths: ["home", "viewer"]
   }),
   methods: {},
   watch: {
     group() {
       this.drawer = false;
-    },
-  },
+    }
+  }
 };
 </script>

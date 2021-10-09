@@ -1,9 +1,14 @@
 import router from '@/router'
 import { getToken } from '@/utils/auth' // get token from cookie
 import NProgress from 'nprogress' // progress bar
+import authRouter from './modules/auth'
 
 // permission control
-const whiteList = ['/login', '/auth-redirect']
+const whiteList = (['/login', '/register']
+    .concat(Array.from(authRouter, (route) => route.path))
+    .concat(Array.from(authRouter, (route) => route.alias)))
+    .filter((route) => route); // remove undefined element
+console.log('[router.whiteList]', whiteList);
 
 // router.beforeEach(async (to, from, next) => {
 router.beforeEach((to, from, next) => {
