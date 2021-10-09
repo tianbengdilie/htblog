@@ -3,9 +3,16 @@ package tconfig
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+)
+
+const (
+	EnvProduction  = "production"
+	EnvTest        = "test"
+	EnvDevelopment = "development"
 )
 
 type TConfig struct {
@@ -16,9 +23,9 @@ func New() *TConfig {
 	fmt.Println("init config file.")
 	appenv := os.Getenv("APPENV")
 	if appenv == "" {
-		appenv = "production"
+		appenv = EnvDevelopment
 	}
-	path := os.Getenv("ROOT_PATH") + "etc/" + appenv
+	path := path.Join(os.Getenv("ROOT_PATH"), "etc/", appenv)
 
 	_config := viper.New()
 	_config.SetConfigName("config")
@@ -32,6 +39,7 @@ func New() *TConfig {
 	_config.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("config file changed: ", e.Name)
 	})
+	_config.Set("APPENV", appenv)
 
 	return &TConfig{
 		_config: _config,

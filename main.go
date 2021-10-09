@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"htblog/internal/api"
 	"htblog/internal/config"
+	"htblog/internal/pkg/tconfig"
 	"htblog/internal/pkg/tlog"
 	"htblog/internal/pkg/tmiddleware"
 	"log"
@@ -66,10 +67,15 @@ func initServer() *http.Server {
 		WriteTimeout: 20 * time.Second,
 	}
 
-	r.Use(tmiddleware.Cors())
+	if config.Config().GetString("APPENV") != tconfig.EnvProduction {
+		r.Use(tmiddleware.RegisterCors())
+	}
 	r.Use(tmiddleware.RegisterRequest(&tmiddleware.MiddleRequestConfig{
 		LogHeaders:    true,
 		LogAllCookies: true,
+	}))
+	r.Use(tmiddleware.RegisterResponse(&tmiddleware.MiddleResponseConfig{
+		MaxResponseLogLength: 1000,
 	}))
 	// r.Use(tmiddleware.GinRecovery())
 
