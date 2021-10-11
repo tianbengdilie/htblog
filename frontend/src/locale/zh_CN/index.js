@@ -59,5 +59,6 @@ export default {
     firstName: '名',
     lastName: '姓',
     email: 'E-mail',
+    account: '账号'
   },
 };

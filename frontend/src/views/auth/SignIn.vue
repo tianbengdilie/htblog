@@ -5,15 +5,8 @@
         <v-card class="elevation-5 pa-3">
           <v-card-text>
             <div class="layout column align-center">
-              <img
-                src="img/icons/android-icon-144x144.png"
-                alt="Vue Vuetify Admin Logo"
-                width="120"
-                height="120"
-              />
-              <h1 class="text-center my-4 primary--text">
-                Vue Vuetify Admin Template
-              </h1>
+              <img src="img/icons/logo.png" width="120" height="120" />
+              <h1 class="text-center my-4 primary--text">Ht Website</h1>
             </div>
             <v-form>
               <v-text-field
@@ -36,7 +29,7 @@
               />
             </v-form>
           </v-card-text>
-          <v-card-text>
+          <!-- <v-card-text>
             <v-row class="text-center" dense no-gutters>
               <v-col cols="12">
                 <v-btn-toggle>
@@ -49,7 +42,7 @@
                 </v-btn-toggle>
               </v-col>
             </v-row>
-          </v-card-text>
+          </v-card-text> -->
           <v-card-actions>
             <v-btn icon>
               <v-icon color="blue"> mdi-facebook </v-icon>
