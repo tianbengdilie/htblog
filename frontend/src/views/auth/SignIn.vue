@@ -82,7 +82,7 @@ export default {
   }),
   methods: {
     async login() {
-      await this.$store.dispatch("LoginByEmail", {
+      await this.$store.dispatch("user/LoginByEmail", {
         email: this.model.email,
         password: this.model.password
       });

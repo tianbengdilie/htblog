@@ -33,6 +33,7 @@ export const filterAsyncRoutes = (roles, routes) => {
 };
 
 const permission = {
+    namespaced: true,
     state: {
         routes: [],
         addRoutes: [],
@@ -61,8 +62,9 @@ const permission = {
                 }
                 commit('SET_ROUTES', accessedRoutes);
                 // Apply selected allowed routes
-                router.addRoutes(accessedRoutes);
-                // console.log('[vuex.permission] accessedRoutes ', routes);
+                accessedRoutes.forEach((e) => {
+                    router.addRoute(e);
+                })
                 console.groupEnd();
             } catch (err) {
                 console.warn('[vuex.permission] GenerateRoutes', err);

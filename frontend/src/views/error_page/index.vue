@@ -5,12 +5,14 @@
         <v-card class="elevation-5 pa-3">
           <v-card-text>
             <div class="layout column align-center">
-              <img src="img/icons/error-404.png" width="120" height="120" />
-              <h1 class="text-center my-4 primary--text">Ht Website</h1>
-              <h3 class="text-center my-4 primary--text">
-                The requested URL {{ $route.params.pathMatch }} was not found on
-                this server.
-              </h3>
+              <img src="img/icons/error.png" width="120" height="120" />
+              <h1 class="display-2 primary--text">
+                {{ `${$t("errors.whoops")}, ${errorCode}` }}
+              </h1>
+              <p>{{ $t(`errors.${errorCode}`) }}</p>
+              <v-btn outlined color="primary" @click="$router.go(-1)">
+                {{ $t("errors.back") }}
+              </v-btn>
             </div>
           </v-card-text>
         </v-card>
@@ -22,6 +24,12 @@
 <script>
 export default {
   name: "error404",
-  components: {}
+  components: {},
+  props: {
+    errorCode: {
+      type: Number,
+      default: 404
+    }
+  }
 };
 </script>

@@ -4,7 +4,7 @@ import authRouter from './modules/auth'
 import store from '@/store'
 
 // permission control
-const whiteList = ([]
+const whiteList = (["/error"]
     .concat(Array.from(authRouter, (route) => route.path))
     .concat(Array.from(authRouter, (route) => route.alias)))
     .filter((route) => route); // remove undefined element
@@ -40,13 +40,13 @@ router.beforeEach(async (to, from, next) => {
                         next({ path: '/' });
                     }
 
-                    // note: roles must be a object array! such as:
-                    // [{id: '1', name: 'editor'}, {id: '2', name: 'developer'}]
-                    await store.dispatch('GenerateRoutes', store.getters.user);
-                    if (!store.getters.permissionRoutes) {
-                        logMsg += '\t[Redirect]\t[next /]';
-                        next({ path: '/' });
-                    }
+                    // // note: roles must be a object array! such as:
+                    // // [{id: '1', name: 'editor'}, {id: '2', name: 'developer'}]
+                    // await store.dispatch('GenerateRoutes', store.getters.user);
+                    // if (!store.getters.permissionRoutes) {
+                    //     logMsg += '\t[Redirect]\t[next /]';
+                    //     next({ path: '/' });
+                    // }
 
                     // Hack method to ensure that addRoutes is complete,
                     // set the replace: true so the navigation will not leave a history record
@@ -71,7 +71,7 @@ router.beforeEach(async (to, from, next) => {
                 next();
             } else {
                 logMsg += '\t[!whiteList]';
-                next(`/singin?redirect=${to.path}`);
+                next(`/signin?redirect=${to.path}`);
             }
         }
     }

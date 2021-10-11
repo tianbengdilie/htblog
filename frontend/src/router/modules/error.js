@@ -1,7 +1,7 @@
 /** When your routing table is too long, you can split it into small modules */
 
-import Layout from '@/views/layout/TheLayout.vue';
-import ErrorPage from '@/views/components/ErrorPage.vue';
+import Layout from '@/views/layout';
+import ErrorPage from '@/views/error_page';
 
 const errorsRouter = {
     path: '/error',

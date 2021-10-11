@@ -21,7 +21,6 @@ export const constantRoutes = [
   {
     path: '*',
     component: errorPage,
-
   },
 
   ...authRouter,
