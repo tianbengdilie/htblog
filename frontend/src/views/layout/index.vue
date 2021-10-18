@@ -2,7 +2,13 @@
   <div class="v-application--wrap">
     <the-layout-drawer />
     <the-layout-toolbar />
-    <the-layout-content />
+    <v-main>
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+      </transition>
+    </v-main>
     <!-- <the-layout-fab /> -->
     <!-- <the-layout-to-top-fab /> -->
     <the-layout-footer />
@@ -12,7 +18,6 @@
 <script>
 import TheLayoutDrawer from "./TheLayoutDrawer.vue";
 import TheLayoutToolbar from "./TheLayoutToolbar.vue";
-import TheLayoutContent from "./TheLayoutContent.vue";
 // import TheLayoutFab from "./TheLayoutFab.vue";
 // import TheLayoutToTopFab from "./TheLayoutToTopFab.vue";
 import TheLayoutFooter from "./TheLayoutFooter.vue";
@@ -22,10 +27,12 @@ export default {
   components: {
     TheLayoutDrawer,
     TheLayoutToolbar,
-    TheLayoutContent,
     // TheLayoutFab,
     // TheLayoutToTopFab,
     TheLayoutFooter
+  },
+  mounted: function() {
+    console.log("layout mounted");
   },
   data: () => ({})
 };

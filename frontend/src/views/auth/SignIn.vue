@@ -86,6 +86,7 @@ export default {
         email: this.model.email,
         password: this.model.password
       });
+      console.log("this.$route.query.redirect : ", this.$route.query.redirect);
       await this.$router.push(this.$route.query.redirect || "/");
     },
     setUserToLogin(id) {

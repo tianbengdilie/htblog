@@ -23,39 +23,40 @@ router.beforeEach(async (to, from, next) => {
     let logMsg = '[router.beforeEach]';
 
     try {
-        if (store.getters.token) { //
+        if (store.getters["user/token"]) { //
             logMsg += '\t[token]';
             if (whiteList.includes(to.path)) { //
                 logMsg += '\t[whiteList]';
                 next({ path: '/' })
             } else { //
                 logMsg += '\t[!whiteList]';
-                if (!store.getters.roles || store.getters.roles.length === 0) {
-                    logMsg += `\t[roles=${store.getters.roles}]`;
+                if (!store.getters["user/roles"] || store.getters["user/roles"].length === 0) {
+                    logMsg += `\t[roles=${store.getters["user/roles"]}]`;
                     // Determine whether the current user has pulled the user_info information
-                    await store.dispatch('GetUserInfo');
-                    if (!store.getters.user || !store.getters.user.roles) {
+                    await store.dispatch('user/GetUserInfo');
+                    console.log('store.getters["user/user"]:', store.getters["user/user"])
+                    if (!store.getters["user/user"] || !store.getters["user/roles"]) {
                         logMsg += '\t[LogOut]\t[next /]';
-                        await store.dispatch('LogOut');
+                        await store.dispatch('user/LogOut');
                         next({ path: '/' });
                     }
 
-                    // // note: roles must be a object array! such as:
-                    // // [{id: '1', name: 'editor'}, {id: '2', name: 'developer'}]
-                    // await store.dispatch('GenerateRoutes', store.getters.user);
-                    // if (!store.getters.permissionRoutes) {
-                    //     logMsg += '\t[Redirect]\t[next /]';
-                    //     next({ path: '/' });
-                    // }
+                    // note: roles must be a object array! such as:
+                    // [{id: '1', name: 'editor'}, {id: '2', name: 'developer'}]
+                    await store.dispatch('GenerateRoutes', store.getters["user/user"]);
+                    if (!store.getters["permission/permissionRoutes"]) {
+                        logMsg += '\t[Redirect]\t[next /]';
+                        next({ path: '/' });
+                    }
 
                     // Hack method to ensure that addRoutes is complete,
                     // set the replace: true so the navigation will not leave a history record
                     next({ ...to, replace: true });
                 } else {
-                    logMsg += `\t[roles=${store.getters.roles}]`;
+                    logMsg += `\t[roles=${store.getters["user/roles"]}]`;
                     // No need to dynamically change permissions can be directly next()
                     // delete the following permission judgment ↓
-                    if (hasPermission(store.getters.roles, to.meta.roles)) {
+                    if (hasPermission(store.getters["user/roles"], to.meta.roles)) {
                         logMsg += `\t[Permission=${to.meta.roles}]\t[next]`;
                         next();
                     } else {

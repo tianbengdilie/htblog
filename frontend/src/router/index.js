@@ -6,29 +6,49 @@ Vue.use(VueRouter)
 // import viewer from '@/views/viewer'
 import layout from '@/views/layout'
 import authRouter from './modules/auth';
-import errorPage from '@/views/error_page';
+// import errorPage from '@/views/error_page';
 
 export const constantRoutes = [
   {
-    path: '/',
-    component: layout
-  },
-  {
     name: 'home',
-    path: '/home',
-    alias: '/'
+    path: '/',
+    alias: '/home',
+    component: layout,
+    // children: [{
+    //   path: '/id', //
+    //   name: 'id',
+    //   component: () => import('@/views/auth/SignIn.vue'),
+    //   meta: {
+    //     title: 'Your account'
+    //   },
+    // }]
   },
   {
-    path: '*',
-    component: errorPage,
+    name: 'blog',
+    path: '/blog',
+    component: layout,
+    children: [{
+      path: '/id', //
+      name: 'id',
+      component: () => import('@/views/auth/SignIn.vue')
+    }]
   },
+  {
+    path: '/test/test', //
+    name: 'test',
+    component: () => import('@/views/auth/SignIn.vue')
+  },
+  // {
+  //   path: '*',
+  //   component: errorPage,
+  // },
 
   ...authRouter,
 ];
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
   routes: constantRoutes,
 
 })

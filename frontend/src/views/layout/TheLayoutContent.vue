@@ -1,19 +1,16 @@
 <template>
-  <v-content>
-    <transition
-      name="fade-transform"
-      mode="out-in"
-    >
+  <v-main>
+    <transition name="fade-transform" mode="out-in">
       <keep-alive>
         <router-view />
       </keep-alive>
     </transition>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
 export default {
-  name: 'TheLayoutContent',
-  data: () => ({}),
+  name: "TheLayoutContent",
+  data: () => ({})
 };
 </script>

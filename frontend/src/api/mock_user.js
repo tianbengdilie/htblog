@@ -6,7 +6,7 @@ export const loginByEmail = async (email, pwd) => {
     if (email == userAdmin.email && pwd == userAdmin.password) {
         user = userAdmin;
     }
-    return user
+    return { user }
 }
 
 export const getUserInfo = async (token) => {
@@ -15,5 +15,5 @@ export const getUserInfo = async (token) => {
     if (token == userAdmin.token) {
         user = userAdmin;
     }
-    return user
+    return { user }
 }

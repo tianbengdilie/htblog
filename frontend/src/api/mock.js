@@ -13,13 +13,13 @@ export const landingInfo = {
 };
 
 export const userAdmin = {
-  email: 'admin@vvadmin.io',
-  password: 'abcd1234',
-  user: 'NelsonEAX',
+  email: '598010199@qq.com',
+  password: 'howhowhow',
+  user: 'tianbengdilie',
   status: 'admin',
   code: '',
   token: '3b759a9ca80234563d87672350659b2b',
-  name: 'Nikolaev Nikolay',
+  name: 'tian',
   avatar: 'https://avatars.githubusercontent.com/u/13101802',
   roles: ['admin', 'editor'],
 };

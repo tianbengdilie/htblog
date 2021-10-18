@@ -44,6 +44,7 @@ const user = {
       }
     },
     SET_TOKEN: (state, token) => {
+      console.log("SET_TOKEN:", token);
       state.token = token;
     },
   }, actions: {
@@ -54,7 +55,7 @@ const user = {
         console.log('[vuex.user] LoginByEmail', payload, response);
         await commit('SET_TOKEN', response.user.token);
         await commit('SET_USER_INFO', response.user);
-        await dispatch('permission/GenerateRoutes', response, { root: true });
+        await dispatch('permission/GenerateRoutes', response.user, { root: true });
       } catch (err) {
         console.warn('[vuex.user] LoginByEmail', err);
       }
