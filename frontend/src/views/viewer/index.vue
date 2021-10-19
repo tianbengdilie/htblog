@@ -66,7 +66,7 @@ export default {
   components: { editor: Editor, viewer: Viewer },
   data: () => {
     return {
-      text: "# title 11111",
+      text: "# title 11111fjo",
       editMode: false
     };
   },
