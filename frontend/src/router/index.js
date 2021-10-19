@@ -3,52 +3,36 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-// import viewer from '@/views/viewer'
 import layout from '@/views/layout'
 import authRouter from './modules/auth';
-// import errorPage from '@/views/error_page';
 
 export const constantRoutes = [
   {
     name: 'home',
     path: '/',
     alias: '/home',
-    component: layout,
-    // children: [{
-    //   path: '/id', //
-    //   name: 'id',
-    //   component: () => import('@/views/auth/SignIn.vue'),
-    //   meta: {
-    //     title: 'Your account'
-    //   },
-    // }]
+    component: layout
   },
   {
     name: 'blog',
     path: '/blog',
     component: layout,
     children: [{
-      path: '/id', //
-      name: 'id',
-      component: () => import('@/views/auth/SignIn.vue')
+      path: '/blog/:uid', //
+      component: () => import('@/views/viewer')
     }]
   },
   {
-    path: '/test/test', //
-    name: 'test',
-    component: () => import('@/views/auth/SignIn.vue')
+    path: '*',
+    component: () => import('@/views/error_page'),
   },
-  // {
-  //   path: '*',
-  //   component: errorPage,
-  // },
 
   ...authRouter,
 ];
 
 const router = new VueRouter({
   mode: 'history',
-  // base: process.env.BASE_URL,
+  base: process.env.BASE_URL,
   routes: constantRoutes,
 
 })
