@@ -19,7 +19,7 @@ export const constantRoutes = [
     component: layout,
     children: [{
       path: '/blog/:uid', //
-      component: () => import('@/views/viewer/dev2')
+      component: () => import('@/views/viewer')
     }]
   },
   {

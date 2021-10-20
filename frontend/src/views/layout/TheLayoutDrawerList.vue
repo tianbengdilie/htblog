@@ -37,8 +37,6 @@ export default {
     test(item) {
       if (item.length < 1) return;
       let nextPath = join(this.basePath, "/id");
-      console.log(this.$router.currentRoute);
-      console.log(nextPath);
       if (nextPath === this.$router.currentRoute.path) return;
       this.$router.push({ path: nextPath });
 

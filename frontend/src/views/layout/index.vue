@@ -31,9 +31,6 @@ export default {
     // TheLayoutToTopFab,
     TheLayoutFooter
   },
-  mounted: function() {
-    console.log("layout mounted");
-  },
   data: () => ({})
 };
 </script>
