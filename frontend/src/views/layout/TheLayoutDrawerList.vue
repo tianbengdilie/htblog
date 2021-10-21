@@ -6,8 +6,12 @@
     dense
     class="layout-drawer"
     :items="dirs"
-    @update:active="test"
   >
+    <template slot="label" slot-scope="{ item }">
+      <div @click="test(item)">
+        {{ item.name + "ggg" }}
+      </div>
+    </template>
   </v-treeview>
 </template>
 
@@ -35,10 +39,12 @@ export default {
   },
   methods: {
     test(item) {
-      if (item.length < 1) return;
-      let nextPath = join(this.basePath, "/id");
+      if (item === undefined) return;
+      let nextPath = join(this.basePath, `${item.fullpath}`);
       if (nextPath === this.$router.currentRoute.path) return;
-      this.$router.push({ path: nextPath });
+      this.$router.push({
+        path: nextPath
+      });
 
       // console.log(resolve(this.$router.));
     },

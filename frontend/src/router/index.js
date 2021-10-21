@@ -18,7 +18,8 @@ export const constantRoutes = [
     path: '/blog',
     component: layout,
     children: [{
-      path: '/blog/:uid', //
+      path: '/blog/*', //
+      name: 'blog-path',
       component: () => import('@/views/viewer')
     }]
   },
