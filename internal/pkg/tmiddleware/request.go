@@ -55,16 +55,13 @@ func RegisterRequest(config *MiddleRequestConfig) gin.HandlerFunc {
 		timer := time.AfterFunc(20*time.Second, func() {
 			logger.Error("request[", c.Request.Method, "]: execute timeout 20s")
 		})
-		// start := time.Now()
+		start := time.Now()
 
 		c.Next()
 		timer.Stop()
 
 		//计算耗时
-		// latency := time.Since(start)
-		// reqt, ok := gRequestDebugMiddleData.reqTimeMonitorMap[path]
-		// if ok {
-		// 	reqt.Add(float64(latency.Milliseconds()))
-		// }
+		latency := time.Since(start)
+		logger.Infof("request[%s]: %s cost time %v", c.Request.Method, url, latency)
 	}
 }

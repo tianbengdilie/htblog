@@ -1,9 +1,9 @@
 package auth
 
 import (
-	ahelper "htblog/internal/api/helper"
 	mhelper "htblog/internal/models/helper"
 	"htblog/internal/models/usermod"
+	"htblog/internal/pkg/tginutils"
 	"htblog/internal/terror"
 	"net/http"
 
@@ -21,7 +21,7 @@ type LoginResp struct {
 }
 
 func Login(ctx *gin.Context) {
-	logger := ahelper.GetLog(ctx)
+	logger := tginutils.GetLog(ctx)
 
 	var req LoginReq
 	err := ctx.BindJSON(&req)
@@ -74,7 +74,7 @@ type RegisterReq struct {
 }
 
 func Register(ctx *gin.Context) {
-	logger := ahelper.GetLog(ctx)
+	logger := tginutils.GetLog(ctx)
 
 	var req RegisterReq
 	err := ctx.BindJSON(&req)
@@ -100,7 +100,7 @@ func Register(ctx *gin.Context) {
 }
 
 func Logout(ctx *gin.Context) {
-	logger := ahelper.GetLog(ctx)
+	logger := tginutils.GetLog(ctx)
 
 	token := ctx.GetHeader(headerToken)
 	if token == "" {
@@ -127,7 +127,7 @@ type GetUserInfoResp struct {
 }
 
 func GetUserInfo(ctx *gin.Context) {
-	logger := ahelper.GetLog(ctx)
+	logger := tginutils.GetLog(ctx)
 
 	token := ctx.GetHeader(headerToken)
 	if token == "" {
