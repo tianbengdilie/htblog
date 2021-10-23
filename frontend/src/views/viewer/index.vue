@@ -12,8 +12,10 @@
       <v-col>
         <v-layout justify-space-around>
           <template v-if="editMode">
-            <v-btn depressed color="primary"> 保存 </v-btn>
-            <v-btn depressed color="error" @click.stop="editMode = false">
+            <v-btn depressed color="primary" @click.stop="exitEditMode(true)">
+              保存
+            </v-btn>
+            <v-btn depressed color="error" @click.stop="exitEditMode(false)">
               退出
             </v-btn>
           </template>
@@ -65,6 +67,12 @@ export default {
     },
     initEditor() {
       this.$refs.editor.quill.setText(this.content);
+    },
+    exitEditMode(saved) {
+      this.editMode = false;
+      if (saved) {
+        console.log("TODO saved opera");
+      }
     }
   }
 };

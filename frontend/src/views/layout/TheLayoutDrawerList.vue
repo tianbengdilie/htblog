@@ -8,8 +8,8 @@
     :items="dirs"
   >
     <template slot="label" slot-scope="{ item }">
-      <div @click="test(item)">
-        {{ item.name + "ggg" }}
+      <div @click="onClick(item)">
+        {{ item.name }}
       </div>
     </template>
   </v-treeview>
@@ -38,15 +38,13 @@ export default {
     dirs: () => data
   },
   methods: {
-    test(item) {
+    onClick(item) {
       if (item === undefined) return;
       let nextPath = join(this.basePath, `${item.fullpath}`);
       if (nextPath === this.$router.currentRoute.path) return;
       this.$router.push({
         path: nextPath
       });
-
-      // console.log(resolve(this.$router.));
     },
     isExternal(path) {
       return /^(https?:|mailto:|tel:)/.test(path);

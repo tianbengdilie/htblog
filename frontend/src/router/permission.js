@@ -17,7 +17,6 @@ function hasPermission(roles, permissionRoles) {
 }
 
 router.beforeEach(async (to, from, next) => {
-    // router.beforeEach((to, from, next) => {
     // start progress bar
     NProgress.start()
     let logMsg = '[router.beforeEach]';
