@@ -7,7 +7,7 @@ import (
 )
 
 //https://github.com/taskcluster/slugid-go/blob/master/slugid/slugid.go google compress uuid
-func getUUID() string {
+func GetUUID() string {
 	uid := []byte(uuid.New().String())
 	// unset most significant bit of first byte to ensure slug starts with [A-Za-f]
 	uid[0] &= 0x7f

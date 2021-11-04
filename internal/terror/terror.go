@@ -16,7 +16,7 @@ var (
 		Msg:  "succeed",
 	}
 
-	ErrReqParam = MsgBase{
+	ErrInvalidParam = MsgBase{
 		Code: 101,
 		Msg:  "invalid param",
 	}

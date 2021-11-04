@@ -26,7 +26,7 @@ func Login(ctx *gin.Context) {
 	var req LoginReq
 	err := ctx.BindJSON(&req)
 	if err != nil {
-		ctx.JSON(http.StatusOK, terror.ErrReqParam)
+		ctx.JSON(http.StatusOK, terror.ErrInvalidParam)
 		return
 	}
 
@@ -79,7 +79,7 @@ func Register(ctx *gin.Context) {
 	var req RegisterReq
 	err := ctx.BindJSON(&req)
 	if err != nil {
-		ctx.JSON(http.StatusOK, terror.ErrReqParam)
+		ctx.JSON(http.StatusOK, terror.ErrInvalidParam)
 		return
 	}
 
@@ -104,7 +104,7 @@ func Logout(ctx *gin.Context) {
 
 	token := ctx.GetHeader(headerToken)
 	if token == "" {
-		ctx.JSON(http.StatusOK, terror.ErrReqParam)
+		ctx.JSON(http.StatusOK, terror.ErrInvalidParam)
 		return
 	}
 
@@ -131,7 +131,7 @@ func GetUserInfo(ctx *gin.Context) {
 
 	token := ctx.GetHeader(headerToken)
 	if token == "" {
-		ctx.JSON(http.StatusOK, terror.ErrReqParam)
+		ctx.JSON(http.StatusOK, terror.ErrInvalidParam)
 		return
 	}
 
